@@ -1,17 +1,40 @@
 {
-    "name": "atv-mac-remote",
+    "name": "atv-remote",
     "version": "1.1.5",
     "main": "app/main.js",
     "description": "ATV Remote",
     "productName": "ATV Remote",
+    "author": {
+        "name": "Required Email",
+        "email": "required@email.tld"
+    },
     "build": {
         "productName": "ATV Remote",
-        "appId": "com.electron.atvMacRemote",
+        "appId": "com.electron.atvRemote",
         "mac": {
             "category": "public.app-category.utilities"
         },
-        "extraFiles": [
-            "server/wsserver.py"
+        "linux": {
+            "target": [
+                "pacman",
+                "appimage",
+                "deb"
+            ],
+            "category": "Utility",
+            "maintainer": "Required Email <required@email.tld>",
+            "extraFiles": [
+                {
+                    "from": "server/wsserver.py",
+                    "to": "resources/wsserver.py"
+                }
+            ],
+            "afterInstall": "scripts/linux-install.sh"
+        },
+        "extraResources": [
+            {
+                "from": "server/wsserver.py",
+                "to": "wsserver.py"
+            }
         ]
     },
     "scripts": {
@@ -20,7 +43,8 @@
         "build": "npx electron-builder -m",
         "docker-build": "./electron_docker.sh 'npm run build:win'",
         "build:win": "npx electron-builder -w",
-        "build-arm": "npx electron-builder -m --arm64"
+        "build-arm": "npx electron-builder -m --arm64",
+        "build:linux": "npx electron-builder -l"
     },
     "devDependencies": {
         "electron": "^13.6.9",
